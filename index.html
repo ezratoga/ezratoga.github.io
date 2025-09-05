@@ -1,84 +1,708 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-  margin: 0;
-  font-family: "Lato", sans-serif;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ezra Toga Parulian Hutabarat - Backend Developer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-p {
-    text-align: justify;
-}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
 
-.sidebar {
-  margin: 0;
-  padding: 0;
-  width: 200px;
-  background-color: #f1f1f1;
-  position: fixed;
-  height: 100%;
-  overflow: auto;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-.sidebar a {
-  display: block;
-  color: black;
-  padding: 16px;
-  text-decoration: none;
-}
- 
-.sidebar a.active {
-  background-color: #04AA6D;
-  color: white;
-}
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
 
-.sidebar a:hover:not(.active) {
-  background-color: #555;
-  color: white;
-}
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
 
-div.content {
-  margin-left: 200px;
-  padding: 1px 16px;
-  height: 1000px;
-}
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
 
-@media screen and (max-width: 700px) {
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-  .sidebar a {float: left;}
-  div.content {margin-left: 0;}
-}
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
 
-@media screen and (max-width: 400px) {
-  .sidebar a {
-    text-align: center;
-    float: none;
-  }
-}
-</style>
+        .nav-link {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="1" fill="white" opacity="0.08"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            margin: 0 auto 1rem;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section-white {
+            background: white;
+        }
+
+        .section-gray {
+            background: #f7fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #2d3748;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill-category {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-category h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 45%;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bounce-in {
+            animation: bounceIn 1s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo">Ezra Toga</div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link" @click="scrollTo('home')">Home</a></li>
+                    <li><a href="#about" class="nav-link" @click="scrollTo('about')">About</a></li>
+                    <li><a href="#skills" class="nav-link" @click="scrollTo('skills')">Skills</a></li>
+                    <li><a href="#experience" class="nav-link" @click="scrollTo('experience')">Experience</a></li>
+                    <li><a href="#contact" class="nav-link" @click="scrollTo('contact')">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
 
-<div class="sidebar">
-  <a class="active" href="index.html">Home</a>
-  <a href="about.html">Portofolio</a>
-  <a href="contact.html">Contact and CV</a>
-</div>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="bounce-in">{{ profile.name }}</h1>
+                        <p class="subtitle fade-in">{{ profile.title }}</p>
+                        <p class="fade-in">{{ profile.description }}</p>
+                        <div class="cta-buttons fade-in">
+                            <a href="#contact" class="btn btn-primary" @click="scrollTo('contact')">
+                                <i class="fas fa-envelope"></i>
+                                Get In Touch
+                            </a>
+                            <a href="#experience" class="btn btn-outline" @click="scrollTo('experience')">
+                                <i class="fas fa-user"></i>
+                                View Experience
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="profile-card bounce-in">
+                            <div class="avatar">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <h3 style="color: white; margin-bottom: 0.5rem;">Backend Developer</h3>
+                            <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">3+ Years Experience</p>
+                            <div style="display: flex; justify-content: center; gap: 1rem;">
+                                <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">Node.js</span>
+                                <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px; color: white; font-size: 0.9rem;">Go</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="content">
-  <h2>Ezra Toga Parulian Hutabarat</h2>
-  <p>Bachelor Degree of Electrical Engineering. More than 3 years as Backend Developer. </p>
-  <p>Passionate about developing a creation, communication, Cybersecurity, Data Engineering, understanding both business flow and technical flow.</p>
-  <p>Skilled in building and maintaining scalable RESTful APIs using Node.js, TypeScript, Go and managing databases like MongoDB, MySQL, and PostgreSQL.</p>
-  <p>Experienced in data migration, PDF generator and optimizing backend processes with Redis and Kafka.</p>
-  <p>Experience in communicating problem-solving in both technical and business contexts.</p>
-</div>
+        <!-- About Section -->
+        <section id="about" class="section section-white">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.1rem; line-height: 1.8; color: #4a5568;">
+                    <p>{{ profile.about }}</p>
+                </div>
+            </div>
+        </section>
 
+        <!-- Skills Section -->
+        <section id="skills" class="section section-gray">
+            <div class="container">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category" v-for="category in skills" :key="category.name">
+                        <h3>
+                            <i :class="category.icon"></i>
+                            {{ category.name }}
+                        </h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag" v-for="skill in category.items" :key="skill">{{ skill }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section section-white">
+            <div class="container">
+                <h2 class="section-title">Experience & Expertise</h2>
+                <div class="timeline">
+                    <div class="timeline-item" v-for="(exp, index) in experience" :key="index">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3 style="color: #667eea; margin-bottom: 0.5rem;">{{ exp.role }}</h3>
+                            <p style="font-weight: 600; color: #4a5568; margin-bottom: 0.5rem;">{{ exp.duration }}</p>
+                            <p style="color: #718096;">{{ exp.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section section-gray">
+            <div class="container">
+                <h2 class="section-title">Let's Connect</h2>
+                <form class="contact-form" @submit.prevent="submitForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" v-model="contactForm.name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" v-model="contactForm.email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" v-model="contactForm.message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="social-links">
+                    <a href="https://github.com/ezratoga" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/ezratoga" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:ezraparulian@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+                <p>&copy; 2025 Ezra Toga Parulian Hutabarat. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    profile: {
+                        name: "Ezra Toga Parulian Hutabarat",
+                        title: "Software Engineer | Focused on Backend Engineer | Passinate at Cybersecurity, Data Engineering",
+                        description: "Passionate about developing scalable solutions, cybersecurity, and data engineering. Experienced in building RESTful APIs, optimizing backend processes and developing UI.",
+                        about: "Bachelor Degree of Electrical Engineering with more than 5 years as Backend Engineer, Full Stack Engineer. I'm passionate about developing creative solutions, communication, Cybersecurity, Data Engineering, understanding both business flow and technical flow. Skilled in building and maintaining scalable RESTful APIs using Node.js (JavaScript/TypeScript), PHP, Go and managing databases like MongoDB, MySQL, and PostgreSQL. Experienced in data migration, PDF generation and optimizing backend processes with Redis and Kafka. And a bit experience in developing and maintaining UI Side using React.js or Vue.js"
+                    },
+                    skills: [
+                        {
+                            name: "Backend Development",
+                            icon: "fas fa-server",
+                            items: ["Node.js (JavaScript/TypeScript)", "Go", "PHP"]
+                        },
+                        {
+                            name: "Frontend Development",
+                            icon: "fas fa-server",
+                            items: ["React.js", "Vue.js"]
+                        },
+                        {
+                            name: "Databases",
+                            icon: "fas fa-database",
+                            items: ["MongoDB", "Oracle", "PostgreSQL", "MySQL", "Redis"]
+                        },
+                        {
+                            name: "Cloud",
+                            icon: "fas fa-cloud",
+                            items: ["AWS", "Google Cloud Platform (GCP)"]
+                        },
+                        {
+                            name: "Tools & Technologies",
+                            icon: "fas fa-tools",
+                            items: ["Kafka", "Docker", "Git", "Kubernetes", "Datadog"]
+                        },
+                        {
+                            name: "Specializations",
+                            icon: "fas fa-shield-alt",
+                            items: ["REST APIs", "Microservices", "Database Management", "Web Socket", "Migrating Data"]
+                        }
+                    ],
+                    experience: [
+                        {
+                            role: "Software Engineer at BPJS Ketenagakerjaan",
+                            duration: "2024 - Present",
+                            description: "Built RESTful APIs and web interfaces using PHP, Node.js, Golang, HTML, and JavaScript. Delivered a scalable microservice and maintained web application used by all BPJS Ketenagakerjaan employees across headquarters and branch office in Indonesia for budget disbursement"
+                        },
+                        {
+                            role: "Backend Developer at Telkom Indonesia",
+                            duration: "2021 - 2024",
+                            description: "I built and maintained high-performance backend systems for Internal Application that focused on reliability, distributed transactions, and data consistency. Developed and maintained APIs using Node.js, TypeScript for microservices, integrated data pipelines from Airflow into services via Kafka. A key challenge I solved involved fixing data discrepancies by collaborating with data engineers, refining event-driven architecture, and implementing strong data constraints."
+                        }
+                    ],
+                    contactForm: {
+                        name: "",
+                        email: "",
+                        message: ""
+                    }
+                }
+            },
+            methods: {
+                scrollTo(elementId) {
+                    document.getElementById(elementId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                },
+                submitForm() {
+                    alert('Thank you for your message! I will get back to you soon.');
+                    this.contactForm = { name: "", email: "", message: "" };
+                }
+            },
+            mounted() {
+                // Add scroll animations
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, observerOptions);
+
+                // Observe all sections for animations
+                document.querySelectorAll('.section').forEach(section => {
+                    section.style.opacity = '0';
+                    section.style.transform = 'translateY(50px)';
+                    section.style.transition = 'all 0.8s ease';
+                    observer.observe(section);
+                });
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
