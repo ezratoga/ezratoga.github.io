@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkezratoga_github"]=self["webpackChunkezratoga_github"]||[]).push([[594],{603:function(t,u,a){a.r(u),a.d(u,{default:function(){return o}});var n=a(6768);const e={class:"about"};function r(t,u){return(0,n.uX)(),(0,n.CE)("div",e,[...u[0]||(u[0]=[(0,n.Lk)("h1",null,"This is an about page",-1)])])}var s=a(1241);const c={},i=(0,s.A)(c,[["render",r]]);var o=i}}]);
+//# sourceMappingURL=about.3c6c6a8d.js.map
