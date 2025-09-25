@@ -20,7 +20,7 @@
                     <div class="highlight-item">
                         <i class="fas fa-shield-alt"></i>
                         <h3>Specialization</h3>
-                        <p>Cybersecurity & Data Engineering</p>
+                        <p>Backend Development, Full Stack Development</p>
                     </div>
                 </div>
             </div>
