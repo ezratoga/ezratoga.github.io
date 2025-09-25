@@ -10,5 +10,6 @@ module.exports = defineConfig({
   },
   devServer: {
     port: 4444 // Set your desired port number here
-  }
+  },
+  publicPath: '/'
 })
